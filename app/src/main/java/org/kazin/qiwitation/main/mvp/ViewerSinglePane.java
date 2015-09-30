@@ -2,6 +2,7 @@ package org.kazin.qiwitation.main.mvp;
 
 import android.app.Fragment;
 import android.util.Log;
+import android.view.View;
 
 import org.kazin.qiwitation.R;
 import org.kazin.qiwitation.main.MainActivity;
@@ -29,14 +30,41 @@ public class ViewerSinglePane extends Viewer{
         mFragment = new UsersFragment();
         mActivity.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.users_container, mFragment).commit();
-
         super.onCreate();
     }
 
 
     @Override
     public void setUsers(List<User> users) {
-        mFragment.mRecyclerView.setAdapter(new UsersFragmentAdapter(users));
+        mFragment.mRecyclerView.setAdapter(new UsersFragmentAdapter(users, getUserOnClickListener()));
         super.setUsers(users);
+    }
+
+    //show methods
+
+    @Override
+    public void showUserLoadingProgress() {
+        /*try{
+            mFragment.mProgressBar.setVisibility(View.VISIBLE);
+        } catch (Exception e){
+            e.printStackTrace();
+        }*/
+
+        super.showUserLoadingProgress();
+    }
+
+    @Override
+    public void unshowUserLoadingProgress() {
+        mFragment.mProgressBar.setVisibility(View.INVISIBLE);
+        super.unshowUserLoadingProgress();
+    }
+
+    //misc
+
+
+    @Override
+    public User getUserByAdapterView(View view) {
+        int id = mFragment.mRecyclerView.getChildAdapterPosition(view);
+        return ((UsersFragmentAdapter)mFragment.mRecyclerView.getAdapter()).getUserByPosition(id);
     }
 }

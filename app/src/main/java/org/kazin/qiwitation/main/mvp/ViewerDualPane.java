@@ -1,5 +1,7 @@
 package org.kazin.qiwitation.main.mvp;
 
+import android.view.View;
+
 import org.kazin.qiwitation.R;
 import org.kazin.qiwitation.main.MainActivity;
 import org.kazin.qiwitation.main.fragment.UserDetailFragment;
@@ -36,6 +38,7 @@ public class ViewerDualPane extends Viewer {
         mActivity.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.user_detail_container, mUserDetailFragment).commit();
 
+
         super.onCreate();
     }
 
@@ -45,7 +48,7 @@ public class ViewerDualPane extends Viewer {
 
     @Override
     public void setUsers(List<User> users) {
-        mUsersFragment.mRecyclerView.setAdapter(new UsersFragmentAdapter(users));
+        mUsersFragment.mRecyclerView.setAdapter(new UsersFragmentAdapter(users, getUserOnClickListener()));
         super.setUsers(users);
     }
 
@@ -53,5 +56,11 @@ public class ViewerDualPane extends Viewer {
     public void setBalances(List<Balance> balances) {
         mUserDetailFragment.mRecyclerView.setAdapter(new UserDetailFragmentAdapter(balances));
         super.setBalances(balances);
+    }
+
+    @Override
+    public User getUserByAdapterView(View view) {
+        int id = mUsersFragment.mRecyclerView.getChildAdapterPosition(view);
+        return ((UsersFragmentAdapter)mUsersFragment.mRecyclerView.getAdapter()).getUserByPosition(id);
     }
 }

@@ -12,6 +12,14 @@ public class User {
     private String name;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
+    public User() {
+    }
+
+    public User(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     /**
      *
      * @return

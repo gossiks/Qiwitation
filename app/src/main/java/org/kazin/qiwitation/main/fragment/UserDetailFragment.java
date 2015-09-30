@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import org.kazin.qiwitation.R;
 import org.kazin.qiwitation.main.fragment.misc.DividerItemDecoration;
@@ -18,6 +19,7 @@ import org.kazin.qiwitation.main.fragment.misc.DividerItemDecoration;
 public class UserDetailFragment extends Fragment {
 
     public RecyclerView mRecyclerView;
+    public ProgressBar mProgressBar;
 
     public UserDetailFragment() {
     }
@@ -27,6 +29,7 @@ public class UserDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View convertView =  inflater.inflate(R.layout.fragment_user_detail, container, false);
         mRecyclerView = (RecyclerView) convertView.findViewById(R.id.user_detail_fragment_recycler);
+        mProgressBar = (ProgressBar) convertView.findViewById(R.id.users_detail_progressbar_fragment);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -34,6 +37,7 @@ public class UserDetailFragment extends Fragment {
         setRecyclerViewDecoration();
 
         mRecyclerView.setLayoutManager(layoutManager);
+        mProgressBar.setVisibility(View.INVISIBLE);
 
         return convertView;
     }

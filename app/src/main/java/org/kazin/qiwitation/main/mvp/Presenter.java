@@ -61,4 +61,16 @@ public class Presenter {
     public void showSetUsersError(Integer resultCode) {
         mViewer.showSetUsersError(resultCode);
     }
+
+    public void showUserLoadingProgress() {
+        mViewer.showUserLoadingProgress();
+    }
+
+    public void unshowUserLoadingProgress() {
+        mViewer.unshowUserLoadingProgress();
+    }
+
+    public void showToast(String s) {
+        mViewer.showToast(s);
+    }
 }

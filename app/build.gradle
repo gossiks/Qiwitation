@@ -34,4 +34,10 @@ dependencies {
     compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta1'
     compile 'com.squareup.retrofit:converter-gson:2.0.0-beta1'
     compile 'com.google.code.gson:gson:2.3.1'
+
+    //design
+    compile 'com.romainpiel.shimmer:library:1.4.0@aar'
+
+    //backend sql
+    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
 }
