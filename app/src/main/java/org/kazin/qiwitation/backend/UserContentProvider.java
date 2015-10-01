@@ -26,8 +26,8 @@ public class UserContentProvider extends ContentProvider{
     static final String ID_USER = "ID_USER";
     static final String NAME_USER = "NAME_USER";
 
-    static final String db_create = "create table "+table_users+"("
-            + ID_USER +"integer primary key, "+ NAME_USER +" text,"+");";
+    static final String db_create = "create table "+table_users+" (" + "id integer primary key autoincrement,"
+            + ID_USER +" integer, "+ NAME_USER +" text"+");";
 
     static final String AUTHORITY = "org.kazin.qiwitation.backend.usercontentprovider";
     static final String USERS_PATH = "users";

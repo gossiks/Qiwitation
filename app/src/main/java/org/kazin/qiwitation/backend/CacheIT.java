@@ -38,7 +38,10 @@ public class CacheIT {
         ActiveAndroid.beginTransaction();
         try{
             for(User user:users){
-                UserAA userAA = new UserAA(user.getName(), user.getId());
+                //UserAA userAA = new UserAA(user.getName(), user.getId());
+                UserAA userAA = new UserAA();
+                userAA.name = user.getName();
+                userAA.UserId = user.getId();
                 userAA.save();
 
                 ContentValues cv = new ContentValues();
@@ -83,14 +86,11 @@ public class CacheIT {
         @Column (name = "UserId")
         public int UserId;
 
-        public UserAA() {
-            super();
-        }
 
-        public UserAA(String name, int id) {
+        /*public UserAA(String name, int id) {
             super();
             this.name = name;
             UserId = id;
-        }
+        }*/
     }
 }
