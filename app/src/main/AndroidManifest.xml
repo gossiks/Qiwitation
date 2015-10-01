@@ -20,6 +20,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:exported="true"
+            android:name="org.kazin.qiwitation.backend.UserContentProvider"
+            android:authorities="org.kazin.qiwitation.backend.usercontentprovider">
+        </provider>
     </application>
 
 </manifest>

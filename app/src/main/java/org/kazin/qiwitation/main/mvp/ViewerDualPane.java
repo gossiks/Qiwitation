@@ -30,6 +30,7 @@ public class ViewerDualPane extends Viewer {
     @Override
     public void onCreate() {
         mUsersFragment = new UsersFragment();
+        mUsersFragment.setViewer(this);
         mUserDetailFragment = new UserDetailFragment();
 
         mActivity.getSupportFragmentManager().beginTransaction()
@@ -62,5 +63,18 @@ public class ViewerDualPane extends Viewer {
     public User getUserByAdapterView(View view) {
         int id = mUsersFragment.mRecyclerView.getChildAdapterPosition(view);
         return ((UsersFragmentAdapter)mUsersFragment.mRecyclerView.getAdapter()).getUserByPosition(id);
+    }
+
+    //show methods
+
+
+    @Override
+    public void showBalancesLoadingProgress() {
+        mUserDetailFragment.mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void unshowBalancesLoadingProgress() {
+        mUserDetailFragment.mProgressBar.setVisibility(View.INVISIBLE);
     }
 }

@@ -28,6 +28,11 @@ public class MainActivity extends AppCompatActivity {
         mViewer.onCreate();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //mViewer.onResume();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

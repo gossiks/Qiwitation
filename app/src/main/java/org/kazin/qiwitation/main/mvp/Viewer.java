@@ -56,6 +56,10 @@ public class Viewer  {
        mPresenter.onCreate();
     }
 
+    public void onResume(){
+        mPresenter.onResume();
+    }
+
     //set methods
     public void setUsers(List<User> users){    }
 
@@ -78,7 +82,7 @@ public class Viewer  {
     }
 
     public void showToast(String string){
-        Toast.makeText(mActivity.getApplicationContext(), string, Toast.LENGTH_SHORT);
+        Toast.makeText(mActivity, string, Toast.LENGTH_SHORT);
     }
 
     public void showUserLoadingProgress() {
@@ -86,6 +90,14 @@ public class Viewer  {
     }
 
     public void unshowUserLoadingProgress() {
+        //eventually blank
+    }
+
+    public void showBalancesLoadingProgress() {
+        //eventually blank
+    }
+
+    public void unshowBalancesLoadingProgress() {
         //eventually blank
     }
 
@@ -103,9 +115,8 @@ public class Viewer  {
                         shimmer.cancel();
                         shimmer.start((ShimmerTextView) v);
 
-                        mPresenter.onUserSelect(
+                        mViewer.onUserSelect(
                                 getUserByAdapterView(v));
-                        Log.d("apkapk", getUserByAdapterView(v).toString());
                 }
             };
         }
@@ -116,4 +127,13 @@ public class Viewer  {
         return null;
     }
 
+
+    public View.OnClickListener getUsersOnRefreshClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.onClickUsersRefresh();
+            }
+        };
+    }
 }

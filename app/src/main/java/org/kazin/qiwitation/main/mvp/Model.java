@@ -2,7 +2,9 @@ package org.kazin.qiwitation.main.mvp;
 
 import org.kazin.qiwitation.backend.CacheIT;
 import org.kazin.qiwitation.backend.RetrofitHelper;
+import org.kazin.qiwitation.object.Balance;
 import org.kazin.qiwitation.object.User;
+import org.kazin.qiwitation.object.UserDetailResponse;
 import org.kazin.qiwitation.object.UsersResponse;
 
 import java.util.List;
@@ -29,9 +31,14 @@ public class Model {
     private Subscriber<List<User>> mUsersCachedSubscriber;
     private Observable<List<User>> mUsersCachedObservable;
 
+    private Subscriber<UserDetailResponse> mUserDetailSubscriber;
+    private Observable<UserDetailResponse> mUserDetailObservable;
+
     private boolean loadUsersInProgress = false;
+    private boolean loadBalancesInProgress = false;
 
     private CacheIT mCacheIT;
+
 
 
     public Model(Presenter presenter) {
@@ -49,19 +56,21 @@ public class Model {
 
     public void onCreate() {
 
+    }
+
+    public void onResume(){
         if(getCacheIT().isUsersCached()){
             loadUsersFromCache();
         } else {
             loadUsersFromWeb();
         }
-
     }
 
 
     //on methods
 
     public void onUserSelect(User user) {
-        //TODO
+        loadBalancesFromWeb(user.getId());
     }
 
 
@@ -76,15 +85,25 @@ public class Model {
     }
 
     private void loadUsersFromCache(){
+        if(!loadUsersInProgress){
+            getUsersCachedObservable().subscribe(getUsersCachedSubscriber());
+        } else {
+            mPresenter.showToast("Refresh task already in progress");
+        }
+    }
 
-
-
+    private void loadBalancesFromWeb(int user_id){
+        if(!loadUsersInProgress){
+            getUserBalancesObservable(user_id).subscribe(getUserBalancesSubscriber());
+        } else {
+            mPresenter.showToast("Refresh task already in progress");
+        }
     }
 
     //init
     private CacheIT getCacheIT(){
         if(mCacheIT == null){
-            mCacheIT = new CacheIT();
+            mCacheIT = new CacheIT(mPresenter.getActivity());
         }
         return mCacheIT;
     }
@@ -96,7 +115,6 @@ public class Model {
             mUsersSubscriber = new Subscriber<UsersResponse>() {
                 @Override
                 public void onCompleted() {
-                    unsubscribe();
                     loadUsersInProgress = false;
                     mPresenter.unshowUserLoadingProgress();
                 }
@@ -111,11 +129,11 @@ public class Model {
                 public void onNext(UsersResponse usersResponse) {
 
                     if(usersResponse.getResultCode()==0){
+                        //mCacheIT.cacheUsers(usersResponse.getUsers());
                         mPresenter.setUsers(usersResponse.getUsers());
                     } else {
                         mPresenter.showSetUsersError(usersResponse.getResultCode());
                     }
-                    onCompleted();
                 }
             };
         }
@@ -124,7 +142,7 @@ public class Model {
     }
 
     private Observable<UsersResponse> getUsersObservable(){
-        if(mUsersObservable == null){
+        //if(mUsersObservable == null){
            mUsersObservable = RetrofitHelper.getIUserRestAPI()
                    .getUsers()
                    .subscribeOn(Schedulers.io())
@@ -137,10 +155,12 @@ public class Model {
                        }
                     })
                    .retry(5);
-        }
+        //}
 
         return mUsersObservable;
     }
+
+
 
     private Subscriber<List<User>> getUsersCachedSubscriber(){
         if(mUsersCachedSubscriber == null){
@@ -194,4 +214,55 @@ public class Model {
     }
 
 
+    private Subscriber<UserDetailResponse> getUserBalancesSubscriber(){
+        if(mUserDetailSubscriber == null){
+            mUserDetailSubscriber = new Subscriber<UserDetailResponse>() {
+                @Override
+                public void onCompleted() {
+                    unsubscribe();
+                    loadBalancesInProgress = false;
+                    mPresenter.unshowBalancesLoadingProgress();
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    loadBalancesInProgress = false;
+                    mPresenter.unshowBalancesLoadingProgress();
+                }
+
+                @Override
+                public void onNext(UserDetailResponse balances) {
+                    if(balances.getResult_code()==0){
+                        mPresenter.setBalances(balances.getBalances());
+                    } else {
+                        mPresenter.showSetUsersError(balances.getResult_code());
+                    }
+                }
+            };
+        }
+        return mUserDetailSubscriber;
+    }
+
+    private Observable<UserDetailResponse> getUserBalancesObservable(int userId){
+        if(mUserDetailObservable == null){
+            mUserDetailObservable = RetrofitHelper.getIUserDetailRestAPI()
+                    .getUserDetail(userId)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe(new Action0() {
+                        @Override
+                        public void call() {
+                            loadBalancesInProgress = true;
+                            mPresenter.showUserLoadingProgress();
+                        }
+                    })
+                    .retry(5);
+        }
+
+        return mUserDetailObservable;
+    }
+
+    public void onClickUsersRefresh() {
+        loadUsersFromWeb();
+    }
 }

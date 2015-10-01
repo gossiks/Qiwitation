@@ -1,9 +1,10 @@
 package org.kazin.qiwitation.main.mvp;
 
+import android.app.Activity;
+
 import org.kazin.qiwitation.object.Balance;
 import org.kazin.qiwitation.object.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,13 +40,17 @@ public class Presenter {
         mModel.onCreate();
     }
 
+    public void onResume() {
+        mModel.onResume();
+    }
+
     //set methods
 
     public void setUsers(List<User> users){
         mViewer.setUsers(users);
     }
 
-    public void setBalances(ArrayList<Balance> balances){
+    public void setBalances(List<Balance> balances){
         mViewer.setBalances(balances);
     }
 
@@ -72,5 +77,23 @@ public class Presenter {
 
     public void showToast(String s) {
         mViewer.showToast(s);
+    }
+
+    public void showBalancesLoadingProgress() {
+        mViewer.showBalancesLoadingProgress();
+    }
+
+    public void unshowBalancesLoadingProgress() {
+        mViewer.unshowBalancesLoadingProgress();
+    }
+
+    //misc
+    public Activity getActivity() {
+        return mViewer.mActivity;
+    }
+
+
+    public void onClickUsersRefresh() {
+        mModel.onClickUsersRefresh();
     }
 }

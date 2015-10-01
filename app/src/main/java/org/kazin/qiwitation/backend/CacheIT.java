@@ -1,5 +1,9 @@
 package org.kazin.qiwitation.backend;
 
+import android.app.Activity;
+import android.content.ContentValues;
+import android.net.Uri;
+
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
@@ -17,6 +21,13 @@ import java.util.List;
  */
 public class CacheIT {
 
+    private Activity mActivity;
+    private final Uri USERS_URI = Uri.parse("content://"+UserContentProvider.AUTHORITY+"/"+UserContentProvider.USERS_PATH);
+
+    public CacheIT(Activity activity) {
+        mActivity = activity;
+    }
+
     public boolean isUsersCached(){
         return 0 < new Select().from(UserAA.class).count();
     }
@@ -29,6 +40,12 @@ public class CacheIT {
             for(User user:users){
                 UserAA userAA = new UserAA(user.getName(), user.getId());
                 userAA.save();
+
+                ContentValues cv = new ContentValues();
+                cv.put(UserContentProvider.NAME_USER, user.getName());
+                cv.put(UserContentProvider.ID_USER, user.getId());
+
+                mActivity.getContentResolver().insert(USERS_URI, cv);
             }
             ActiveAndroid.setTransactionSuccessful();
         }
@@ -40,6 +57,7 @@ public class CacheIT {
     public void dropTableIfNeeded(){
         if(isUsersCached()){
             new Delete().from(UserAA.class).execute();
+            mActivity.getContentResolver().delete(USERS_URI, null,null);
         }
     }
 

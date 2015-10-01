@@ -7,26 +7,26 @@ import java.util.Map;
 
 public class UserDetailResponse {
 
-    private Integer resultCode;
+    private Integer result_code;
     private List<Balance> balances = new ArrayList<Balance>();
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      *
      * @return
-     * The resultCode
+     * The result_code
      */
-    public Integer getResultCode() {
-        return resultCode;
+    public Integer getResult_code() {
+        return result_code;
     }
 
     /**
      *
-     * @param resultCode
+     * @param result_code
      * The result_code
      */
-    public void setResultCode(Integer resultCode) {
-        this.resultCode = resultCode;
+    public void setResult_code(Integer result_code) {
+        this.result_code = result_code;
     }
 
     /**
