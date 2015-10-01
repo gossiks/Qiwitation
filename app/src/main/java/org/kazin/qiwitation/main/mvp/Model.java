@@ -111,7 +111,7 @@ public class Model {
     //rxjava
 
     private Subscriber<UsersResponse> getUserSubscriber(){
-        if(mUsersSubscriber == null){
+        //if(mUsersSubscriber == null){
             mUsersSubscriber = new Subscriber<UsersResponse>() {
                 @Override
                 public void onCompleted() {
@@ -136,7 +136,7 @@ public class Model {
                     }
                 }
             };
-        }
+        //}
 
         return mUsersSubscriber;
     }
@@ -163,7 +163,7 @@ public class Model {
 
 
     private Subscriber<List<User>> getUsersCachedSubscriber(){
-        if(mUsersCachedSubscriber == null){
+        //if(mUsersCachedSubscriber == null){
             mUsersCachedSubscriber = new Subscriber<List<User>>() {
                 @Override
                 public void onCompleted() {
@@ -183,12 +183,12 @@ public class Model {
                     mPresenter.setUsers(users);
                 }
             };
-        }
+        //}
         return mUsersCachedSubscriber;
     }
 
     private Observable<List<User>> getUsersCachedObservable(){
-        if(mUsersCachedObservable == null){
+        //if(mUsersCachedObservable == null){
             mUsersCachedObservable = Observable.create(new Observable.OnSubscribe<List<User>>() {
                 @Override
                 public void call(Subscriber<? super List<User>> subscriber) {
@@ -208,14 +208,14 @@ public class Model {
                     mPresenter.showUserLoadingProgress();
                 }
             });
-        }
+        //}
 
         return mUsersCachedObservable;
     }
 
 
     private Subscriber<UserDetailResponse> getUserBalancesSubscriber(){
-        if(mUserDetailSubscriber == null){
+        //if(mUserDetailSubscriber == null){
             mUserDetailSubscriber = new Subscriber<UserDetailResponse>() {
                 @Override
                 public void onCompleted() {
@@ -239,12 +239,12 @@ public class Model {
                     }
                 }
             };
-        }
+        //}
         return mUserDetailSubscriber;
     }
 
     private Observable<UserDetailResponse> getUserBalancesObservable(int userId){
-        if(mUserDetailObservable == null){
+        //if(mUserDetailObservable == null){
             mUserDetailObservable = RetrofitHelper.getIUserDetailRestAPI()
                     .getUserDetail(userId)
                     .subscribeOn(Schedulers.io())
@@ -257,7 +257,7 @@ public class Model {
                         }
                     })
                     .retry(5);
-        }
+        //}
 
         return mUserDetailObservable;
     }

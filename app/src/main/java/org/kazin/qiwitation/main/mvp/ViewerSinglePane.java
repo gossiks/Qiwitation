@@ -22,6 +22,8 @@ import java.util.List;
  */
 public class ViewerSinglePane extends Viewer{
 
+    public static final String USER_FRAGMENT_TAG = "userFragment";
+
     private UsersFragment mFragment;
     private UserDetailFragment mUserDetailFragment;
 
@@ -31,11 +33,14 @@ public class ViewerSinglePane extends Viewer{
 
     @Override
     public void onCreate() {
+
+        mFragment = (UsersFragment) mActivity.getSupportFragmentManager().findFragmentByTag(USER_FRAGMENT_TAG);
+
         if(mFragment == null){
             mFragment = new UsersFragment();
             mFragment.setViewer(this);
             mActivity.getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.users_container, mFragment).commit();
+                    .replace(R.id.users_container, mFragment, USER_FRAGMENT_TAG).commit();
         }
         super.onCreate();
     }
