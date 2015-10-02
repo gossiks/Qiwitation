@@ -92,6 +92,7 @@ public class ViewerSinglePane extends Viewer{
     @Override
     public void showBalancesLoadingProgress() {
         mUserDetailFragment.mProgressBar.setVisibility(View.VISIBLE);
+        mViewer.clearUsers();
     }
 
     @Override
@@ -134,6 +135,13 @@ public class ViewerSinglePane extends Viewer{
         mUserDetailFragment.mRepeatButton.setVisibility(View.INVISIBLE);
         super.unshowBalancesRetrieveError();
     }
+
+    @Override
+    public void clearUsers() {
+        ((UsersFragmentAdapter)mFragment.mRecyclerView.getAdapter()).clearData();
+        super.clearUsers();
+    }
+
 
     //misc
 

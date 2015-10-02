@@ -109,4 +109,7 @@ public class Presenter {
     }
 
 
+    public void onClickUserDetailRefresh() {
+        mModel.onClickUserDetailRefresh();
+    }
 }

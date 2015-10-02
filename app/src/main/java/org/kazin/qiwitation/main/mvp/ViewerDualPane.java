@@ -50,7 +50,6 @@ public class ViewerDualPane extends Viewer {
     @Override
     public void onUserSelect(User user) {
         mViewer.clearBalances();
-
         super.onUserSelect(user);
     }
 
@@ -61,6 +60,7 @@ public class ViewerDualPane extends Viewer {
 
         mUsersFragment.mRepeatButton.setOnClickListener(mViewer.getOnClickRepeatUsersListener());
         mUsersFragment.mRepeatButton.setVisibility(View.VISIBLE);
+        mViewer.clearBalances();
 
         super.showUserRetrieveError(message);
     }
@@ -92,6 +92,7 @@ public class ViewerDualPane extends Viewer {
     @Override
     public void showUserLoadingProgress() {
         mUserDetailFragment.mProgressBar.setVisibility(View.VISIBLE);
+        mViewer.clearUsers();
         super.showUserLoadingProgress();
     }
 
@@ -130,6 +131,16 @@ public class ViewerDualPane extends Viewer {
     public User getUserByAdapterView(View view) {
         int id = mUsersFragment.mRecyclerView.getChildAdapterPosition(view);
         return ((UsersFragmentAdapter)mUsersFragment.mRecyclerView.getAdapter()).getUserByPosition(id);
+    }
+
+    @Override
+    public void clearUsers() {
+        try {
+            ((UsersFragmentAdapter)mUsersFragment.mRecyclerView.getAdapter()).clearData();
+        } catch (Exception e){
+            Log.d("apkapk", "User list not yet initialized.");
+        }
+        super.clearUsers();
     }
 
     //show methods

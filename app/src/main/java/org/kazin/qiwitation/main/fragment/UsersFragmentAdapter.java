@@ -66,4 +66,15 @@ public class UsersFragmentAdapter extends RecyclerView.Adapter<UsersFragmentAdap
         }
     }
 
+    public void clearData() {
+        int size = mUsers.size();
+        if (size > 0) {
+            for (int i = 0; i < size; i++) {
+                mUsers.remove(0);
+            }
+
+            this.notifyItemRangeRemoved(0, size);
+        }
+    }
+
 }

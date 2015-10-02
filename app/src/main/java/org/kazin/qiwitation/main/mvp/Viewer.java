@@ -70,6 +70,8 @@ public class Viewer  {
 
     public void setBalances(List<Balance> balances){    }
 
+    public void clearUsers(){ }
+
     public void clearBalances(){ }
 
     //on methods
@@ -152,8 +154,20 @@ public class Viewer  {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                mViewer.clearUsers();
+                mViewer.unshowUserRetrieveError();
                 mPresenter.onClickUsersRefresh();
+            }
+        };
+    }
+
+    public View.OnClickListener getUserDetailRefreshListener(){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewer.clearBalances();
+                mViewer.unshowBalancesRetrieveError();
+                mPresenter.onClickUserDetailRefresh();
             }
         };
     }
@@ -162,6 +176,7 @@ public class Viewer  {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mViewer.clearBalances();
                 mViewer.unshowBalancesRetrieveError();
                 mViewer.onResumeUserDetailFragment();
             }
@@ -172,6 +187,7 @@ public class Viewer  {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mViewer.clearUsers();
                 mViewer.unshowUserRetrieveError();
                 mViewer.onResumeUserFragment();
             }

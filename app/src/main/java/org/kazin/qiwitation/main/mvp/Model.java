@@ -280,6 +280,12 @@ public class Model {
         loadUsersFromWeb();
     }
 
+    public void onClickUserDetailRefresh() {
+        if(mUserRetrieveBalances!=null){
+            loadBalancesFromWeb(mUserRetrieveBalances.getId());
+        }
+    }
+
     //misc
     @NonNull
     private String getErrorMessage(UserDetailResponse balances) {
@@ -291,5 +297,6 @@ public class Model {
         }
         return error;
     }
+
 
 }

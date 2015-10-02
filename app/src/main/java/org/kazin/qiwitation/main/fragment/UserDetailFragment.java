@@ -56,6 +56,8 @@ public class UserDetailFragment extends Fragment {
         mRecyclerView.setLayoutManager(layoutManager);
         mProgressBar.setVisibility(View.INVISIBLE);
 
+        mRefreshButton.setOnClickListener(mViewer.getUserDetailRefreshListener());
+
         return convertView;
     }
 
