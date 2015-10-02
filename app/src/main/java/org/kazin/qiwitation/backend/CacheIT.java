@@ -38,7 +38,6 @@ public class CacheIT {
         ActiveAndroid.beginTransaction();
         try{
             for(User user:users){
-                //UserAA userAA = new UserAA(user.getName(), user.getId());
                 UserAA userAA = new UserAA();
                 userAA.name = user.getName();
                 userAA.UserId = user.getId();

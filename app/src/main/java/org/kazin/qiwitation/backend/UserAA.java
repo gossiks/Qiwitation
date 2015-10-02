@@ -20,9 +20,4 @@ public class UserAA extends Model {
         super();
     }
 
-    /*public UserAA(String name, int id) {
-            super();
-            this.name = name;
-            UserId = id;
-        }*/
 }

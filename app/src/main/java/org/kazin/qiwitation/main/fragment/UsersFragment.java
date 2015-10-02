@@ -15,9 +15,6 @@ import org.kazin.qiwitation.R;
 import org.kazin.qiwitation.main.fragment.misc.DividerItemDecoration;
 import org.kazin.qiwitation.main.mvp.Viewer;
 
-/**
- * A placeholder fragment containing a simple view.
- */
 public class UsersFragment extends Fragment {
 
     public RecyclerView mRecyclerView;
@@ -70,9 +67,5 @@ public class UsersFragment extends Fragment {
     public void setViewer(Viewer viewer){
         mViewer = viewer;
     }
-
-
-
-    //public methods
 
 }

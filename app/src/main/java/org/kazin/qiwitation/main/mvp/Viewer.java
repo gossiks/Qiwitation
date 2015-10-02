@@ -6,6 +6,7 @@ import android.widget.Toast;
 import com.romainpiel.shimmer.Shimmer;
 import com.romainpiel.shimmer.ShimmerTextView;
 
+import org.kazin.qiwitation.R;
 import org.kazin.qiwitation.main.MainActivity;
 import org.kazin.qiwitation.object.Balance;
 import org.kazin.qiwitation.object.User;
@@ -84,7 +85,7 @@ public class Viewer  {
     //show methods
 
     public void showSetUsersError(Integer resultCode) {
-        showToast("Can't load users list. Error code: " + resultCode);
+        showToast(mActivity.getString(R.string.load_list_error_with_error_code) + resultCode);
     }
 
     public void showToast(String string){

@@ -2,4 +2,11 @@
     <string name="app_name">Qiwitation</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="no_balance_for_user">No balance data for user.</string>
+    <string name="error_retrieving_balances">"Error retrieving balances. Result code is "</string>
+    <string name="error_retrieving_user_balances">"Error retrieving user balances. Error: "</string>
+    <string name="error_with_cache_load">"Error with users cache load: "</string>
+    <string name="error_retr_users">"Error retrieving Users: "</string>
+    <string name="refresh_task_in_progress">Refresh task already in progress</string>
+    <string name="load_list_error_with_error_code">"Can't load users list. Error code: "</string>
 </resources>

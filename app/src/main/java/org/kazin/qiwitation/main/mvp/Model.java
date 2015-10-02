@@ -1,11 +1,10 @@
 package org.kazin.qiwitation.main.mvp;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
+import org.kazin.qiwitation.R;
 import org.kazin.qiwitation.backend.CacheIT;
 import org.kazin.qiwitation.backend.RetrofitHelper;
-import org.kazin.qiwitation.object.Balance;
 import org.kazin.qiwitation.object.User;
 import org.kazin.qiwitation.object.UserDetailResponse;
 import org.kazin.qiwitation.object.UsersResponse;
@@ -62,7 +61,6 @@ public class Model {
     }
 
     public void onResumeUserFragment(){
-        Log.d("apkapk", "Model.onResumeUserFragment()");
         if(getCacheIT().isUsersCached()){
             loadUsersFromCache();
         } else {
@@ -91,7 +89,7 @@ public class Model {
         if(!loadUsersInProgress){
             getUsersObservable().subscribe(getUserSubscriber());
         } else {
-            mPresenter.showToast("Refresh task already in progress");
+            mPresenter.showToast(mPresenter.getActivity().getString(R.string.refresh_task_in_progress));
         }
     }
 
@@ -100,7 +98,7 @@ public class Model {
         if(!loadUsersInProgress){
             getUsersCachedObservable().subscribe(getUsersCachedSubscriber());
         } else {
-            mPresenter.showToast("Refresh task already in progress");
+            mPresenter.showToast(mPresenter.getActivity().getString(R.string.refresh_task_in_progress));
         }
     }
 
@@ -108,7 +106,7 @@ public class Model {
         if(!loadBalancesInProgress){
             getUserBalancesObservable(user_id).subscribe(getUserBalancesSubscriber());
         } else {
-            mPresenter.showToast("Refresh task already in progress");
+            mPresenter.showToast(mPresenter.getActivity().getString(R.string.refresh_task_in_progress));
         }
     }
 
@@ -134,7 +132,7 @@ public class Model {
                 public void onError(Throwable e) {
                     loadUsersInProgress = false;
                     mPresenter.unshowUserLoadingProgress();
-                    mPresenter.showUserRetrieveError("Error retrieving Users: " + e.getMessage());
+                    mPresenter.showUserRetrieveError(mPresenter.getActivity().getString(R.string.error_retr_users) + e.getMessage());
                 }
 
                 @Override
@@ -144,7 +142,7 @@ public class Model {
                         mCacheIT.cacheUsers(usersResponse.getUsers());
                         mPresenter.setUsers(usersResponse.getUsers());
                     } else {
-                        mPresenter.showUserRetrieveError("Error retrieving Users: "+usersResponse.getResultCode());
+                        mPresenter.showUserRetrieveError(mPresenter.getActivity().getString(R.string.error_retr_users)+usersResponse.getResultCode());
                     }
                 }
             };
@@ -186,7 +184,7 @@ public class Model {
                 public void onError(Throwable e) {
                     loadUsersInProgress = false;
                     mPresenter.unshowUserLoadingProgress();
-                    mPresenter.showUserRetrieveError("Error with users cache load: " + e);
+                    mPresenter.showUserRetrieveError(mPresenter.getActivity().getString(R.string.error_with_cache_load) + e);
                 }
 
                 @Override
@@ -239,7 +237,7 @@ public class Model {
                 public void onError(Throwable e) {
                     loadBalancesInProgress = false;
                     mPresenter.unshowBalancesLoadingProgress();
-                    mPresenter.showBalancesRetrieveError("Error retrieving user balances. Error: " + e.getMessage());
+                    mPresenter.showBalancesRetrieveError(mPresenter.getActivity().getString(R.string.error_retrieving_user_balances) + e.getMessage());
                 }
 
                 @Override
@@ -291,9 +289,9 @@ public class Model {
     private String getErrorMessage(UserDetailResponse balances) {
         String error;
         if(balances.getResult_code()==300){
-            error = "No balance data for user.";
+            error = mPresenter.getActivity().getString(R.string.no_balance_for_user);
         } else {
-            error = "Error retrieving balances. Result code is " + balances.getResult_code();
+            error = mPresenter.getActivity().getString(R.string.error_retrieving_balances) + balances.getResult_code();
         }
         return error;
     }

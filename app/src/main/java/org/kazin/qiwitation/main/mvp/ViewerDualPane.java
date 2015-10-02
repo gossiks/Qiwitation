@@ -9,11 +9,9 @@ import org.kazin.qiwitation.main.fragment.UserDetailFragment;
 import org.kazin.qiwitation.main.fragment.UserDetailFragmentAdapter;
 import org.kazin.qiwitation.main.fragment.UsersFragment;
 import org.kazin.qiwitation.main.fragment.UsersFragmentAdapter;
-import org.kazin.qiwitation.main.fragment.misc.DividerItemDecoration;
 import org.kazin.qiwitation.object.Balance;
 import org.kazin.qiwitation.object.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
