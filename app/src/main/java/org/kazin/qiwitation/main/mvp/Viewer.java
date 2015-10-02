@@ -1,6 +1,5 @@
 package org.kazin.qiwitation.main.mvp;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -56,23 +55,28 @@ public class Viewer  {
        mPresenter.onCreate();
     }
 
-    public void onResume(){
-        mPresenter.onResume();
+    public void onResumeUserFragment(){
+        mViewer.unshowUserRetrieveError();
+        mPresenter.onResumeUserFragment();
+    }
+
+    public void onResumeUserDetailFragment(){
+        mViewer.unshowBalancesRetrieveError();
+        mPresenter.onResumeUserDetailFragment();
     }
 
     //set methods
     public void setUsers(List<User> users){    }
 
-    public void setBalances(List<Balance> balances){
+    public void setBalances(List<Balance> balances){    }
 
-    }
-
-
+    public void clearBalances(){ }
 
     //on methods
 
     public void onUserSelect(User user){
         mPresenter.onUserSelect(user);
+        mPresenter.onResumeUserDetailFragment();
     }
 
     //show methods
@@ -82,7 +86,7 @@ public class Viewer  {
     }
 
     public void showToast(String string){
-        Toast.makeText(mActivity, string, Toast.LENGTH_SHORT);
+        Toast.makeText(mActivity, string, Toast.LENGTH_SHORT).show();
     }
 
     public void showUserLoadingProgress() {
@@ -99,6 +103,22 @@ public class Viewer  {
 
     public void unshowBalancesLoadingProgress() {
         //eventually blank
+    }
+
+    public void showUserRetrieveError(String message){
+
+    }
+
+    public void unshowUserRetrieveError( ){
+
+    }
+
+    public void showBalancesRetrieveError(String message){
+
+    }
+
+    public void unshowBalancesRetrieveError( ){
+
     }
 
     //misc
@@ -132,7 +152,28 @@ public class Viewer  {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 mPresenter.onClickUsersRefresh();
+            }
+        };
+    }
+
+    public View.OnClickListener getOnclickRepeatDetailsListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewer.unshowBalancesRetrieveError();
+                mViewer.onResumeUserDetailFragment();
+            }
+        };
+    }
+
+    public View.OnClickListener getOnClickRepeatUsersListener(){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewer.unshowUserRetrieveError();
+                mViewer.onResumeUserFragment();
             }
         };
     }

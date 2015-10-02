@@ -1,5 +1,8 @@
 package org.kazin.qiwitation.main.mvp;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
+
 import org.kazin.qiwitation.backend.CacheIT;
 import org.kazin.qiwitation.backend.RetrofitHelper;
 import org.kazin.qiwitation.object.Balance;
@@ -38,7 +41,7 @@ public class Model {
     private boolean loadBalancesInProgress = false;
 
     private CacheIT mCacheIT;
-
+    private User mUserRetrieveBalances;
 
 
     public Model(Presenter presenter) {
@@ -58,7 +61,8 @@ public class Model {
 
     }
 
-    public void onResume(){
+    public void onResumeUserFragment(){
+        Log.d("apkapk", "Model.onResumeUserFragment()");
         if(getCacheIT().isUsersCached()){
             loadUsersFromCache();
         } else {
@@ -66,17 +70,24 @@ public class Model {
         }
     }
 
+    public void onResumeUserDetailFragment() {
+        if(mUserRetrieveBalances!=null){
+            loadBalancesFromWeb(mUserRetrieveBalances.getId());
+        }
+    }
+
 
     //on methods
 
     public void onUserSelect(User user) {
-        loadBalancesFromWeb(user.getId());
+        mUserRetrieveBalances = user;
     }
 
 
 
     //
     private void loadUsersFromWeb(){
+        mPresenter.showUserLoadingProgress();
         if(!loadUsersInProgress){
             getUsersObservable().subscribe(getUserSubscriber());
         } else {
@@ -85,6 +96,7 @@ public class Model {
     }
 
     private void loadUsersFromCache(){
+        mPresenter.showUserLoadingProgress();
         if(!loadUsersInProgress){
             getUsersCachedObservable().subscribe(getUsersCachedSubscriber());
         } else {
@@ -93,7 +105,7 @@ public class Model {
     }
 
     private void loadBalancesFromWeb(int user_id){
-        if(!loadUsersInProgress){
+        if(!loadBalancesInProgress){
             getUserBalancesObservable(user_id).subscribe(getUserBalancesSubscriber());
         } else {
             mPresenter.showToast("Refresh task already in progress");
@@ -122,6 +134,7 @@ public class Model {
                 public void onError(Throwable e) {
                     loadUsersInProgress = false;
                     mPresenter.unshowUserLoadingProgress();
+                    mPresenter.showUserRetrieveError("Error retrieving Users: " + e.getMessage());
                 }
 
                 @Override
@@ -131,7 +144,7 @@ public class Model {
                         mCacheIT.cacheUsers(usersResponse.getUsers());
                         mPresenter.setUsers(usersResponse.getUsers());
                     } else {
-                        mPresenter.showSetUsersError(usersResponse.getResultCode());
+                        mPresenter.showUserRetrieveError("Error retrieving Users: "+usersResponse.getResultCode());
                     }
                 }
             };
@@ -173,7 +186,7 @@ public class Model {
                 public void onError(Throwable e) {
                     loadUsersInProgress = false;
                     mPresenter.unshowUserLoadingProgress();
-                    mPresenter.showToast("Error with users cache load: "+e);
+                    mPresenter.showUserRetrieveError("Error with users cache load: " + e);
                 }
 
                 @Override
@@ -226,6 +239,7 @@ public class Model {
                 public void onError(Throwable e) {
                     loadBalancesInProgress = false;
                     mPresenter.unshowBalancesLoadingProgress();
+                    mPresenter.showBalancesRetrieveError("Error retrieving user balances. Error: " + e.getMessage());
                 }
 
                 @Override
@@ -233,13 +247,15 @@ public class Model {
                     if(balances.getResult_code()==0){
                         mPresenter.setBalances(balances.getBalances());
                     } else {
-                        mPresenter.showSetUsersError(balances.getResult_code());
+                        mPresenter.showBalancesRetrieveError(getErrorMessage(balances));
                     }
                 }
             };
 
         return mUserDetailSubscriber;
     }
+
+
 
     private Observable<UserDetailResponse> getUserBalancesObservable(int userId){
 
@@ -251,7 +267,7 @@ public class Model {
                         @Override
                         public void call() {
                             loadBalancesInProgress = true;
-                            mPresenter.showUserLoadingProgress();
+                            mPresenter.showBalancesLoadingProgress();
                         }
                     })
                     .retry(5);
@@ -263,4 +279,17 @@ public class Model {
     public void onClickUsersRefresh() {
         loadUsersFromWeb();
     }
+
+    //misc
+    @NonNull
+    private String getErrorMessage(UserDetailResponse balances) {
+        String error;
+        if(balances.getResult_code()==300){
+            error = "No balance data for user.";
+        } else {
+            error = "Error retrieving balances. Result code is " + balances.getResult_code();
+        }
+        return error;
+    }
+
 }

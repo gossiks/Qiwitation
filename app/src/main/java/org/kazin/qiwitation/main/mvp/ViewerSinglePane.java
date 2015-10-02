@@ -1,7 +1,5 @@
 package org.kazin.qiwitation.main.mvp;
 
-import android.app.Fragment;
-import android.util.Log;
 import android.view.View;
 
 import org.kazin.qiwitation.R;
@@ -10,11 +8,9 @@ import org.kazin.qiwitation.main.fragment.UserDetailFragment;
 import org.kazin.qiwitation.main.fragment.UserDetailFragmentAdapter;
 import org.kazin.qiwitation.main.fragment.UsersFragment;
 import org.kazin.qiwitation.main.fragment.UsersFragmentAdapter;
-import org.kazin.qiwitation.main.fragment.misc.DividerItemDecoration;
 import org.kazin.qiwitation.object.Balance;
 import org.kazin.qiwitation.object.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,9 +42,8 @@ public class ViewerSinglePane extends Viewer{
     }
 
     @Override
-    public void onResume() {
-
-        super.onResume();
+    public void onResumeUserFragment() {
+        super.onResumeUserFragment();
     }
 
     //set methods
@@ -62,6 +57,8 @@ public class ViewerSinglePane extends Viewer{
     @Override
     public void setBalances(List<Balance> balances) {
         mUserDetailFragment.mRecyclerView.setAdapter(new UserDetailFragmentAdapter(balances));
+        mUserDetailFragment.mRepeatButton.setVisibility(View.INVISIBLE);
+        mUserDetailFragment.mError.setVisibility(View.INVISIBLE);
         super.setBalances(balances);
     }
 
@@ -70,6 +67,7 @@ public class ViewerSinglePane extends Viewer{
     @Override
     public void onUserSelect(User user) {
         mUserDetailFragment = new UserDetailFragment();
+        mUserDetailFragment.setViewer(this);
         mActivity.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.users_container, mUserDetailFragment).addToBackStack("singlePane").commit();
         super.onUserSelect(user);
@@ -80,11 +78,7 @@ public class ViewerSinglePane extends Viewer{
 
     @Override
     public void showUserLoadingProgress() {
-        /*try{
-            mFragment.mProgressBar.setVisibility(View.VISIBLE);
-        } catch (Exception e){
-            e.printStackTrace();
-        }*/
+        mFragment.mProgressBar.setVisibility(View.VISIBLE);
 
         super.showUserLoadingProgress();
     }
@@ -103,6 +97,42 @@ public class ViewerSinglePane extends Viewer{
     @Override
     public void unshowBalancesLoadingProgress() {
         mUserDetailFragment.mProgressBar.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void showUserRetrieveError(String message) {
+        mFragment.mError.setText(message);
+        mFragment.mError.setVisibility(View.VISIBLE);
+
+        mFragment.mRepeatButton.setOnClickListener(mViewer.getOnClickRepeatUsersListener());
+        mFragment.mRepeatButton.setVisibility(View.VISIBLE);
+
+        super.showUserRetrieveError(message);
+    }
+
+    @Override
+    public void unshowUserRetrieveError() {
+        mFragment.mError.setVisibility(View.INVISIBLE);
+        mFragment.mRepeatButton.setVisibility(View.INVISIBLE);
+        super.unshowUserRetrieveError();
+    }
+
+    @Override
+    public void showBalancesRetrieveError(String message) {
+        mUserDetailFragment.mError.setText(message);
+        mUserDetailFragment.mError.setVisibility(View.VISIBLE);
+
+        mUserDetailFragment.mRepeatButton.setOnClickListener(mViewer.getOnclickRepeatDetailsListener());
+        mUserDetailFragment.mRepeatButton.setVisibility(View.VISIBLE);
+
+        super.showBalancesRetrieveError(message);
+    }
+
+    @Override
+    public void unshowBalancesRetrieveError() {
+        mUserDetailFragment.mError.setVisibility(View.INVISIBLE);
+        mUserDetailFragment.mRepeatButton.setVisibility(View.INVISIBLE);
+        super.unshowBalancesRetrieveError();
     }
 
     //misc

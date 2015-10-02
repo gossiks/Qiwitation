@@ -75,22 +75,4 @@ public class CacheIT {
         return users;
     }
 
-    //sql ActiveAndroid POJO
-
-    @Table(name = "Users")
-    public class UserAA extends Model {
-
-        @Column (name = "Name")
-        public String name;
-
-        @Column (name = "UserId")
-        public int UserId;
-
-
-        /*public UserAA(String name, int id) {
-            super();
-            this.name = name;
-            UserId = id;
-        }*/
-    }
 }

@@ -40,8 +40,12 @@ public class Presenter {
         mModel.onCreate();
     }
 
-    public void onResume() {
-        mModel.onResume();
+    public void onResumeUserFragment() {
+        mModel.onResumeUserFragment();
+    }
+
+    public void onResumeUserDetailFragment() {
+        mModel.onResumeUserDetailFragment();
     }
 
     //set methods
@@ -87,6 +91,13 @@ public class Presenter {
         mViewer.unshowBalancesLoadingProgress();
     }
 
+    public void showUserRetrieveError(String s) {
+        mViewer.showUserRetrieveError(s);
+    }
+
+    public void showBalancesRetrieveError(String s) {
+        mViewer.showBalancesRetrieveError(s);
+    }
     //misc
     public Activity getActivity() {
         return mViewer.mActivity;
@@ -96,4 +107,6 @@ public class Presenter {
     public void onClickUsersRefresh() {
         mModel.onClickUsersRefresh();
     }
+
+
 }

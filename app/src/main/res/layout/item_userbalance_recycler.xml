@@ -5,12 +5,15 @@
 
     <TextView
         android:id="@+id/amount_item_userbalance_recycler"
-        android:layout_weight="4"
+        android:gravity="right"
+        android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/currency_item_userbalance_recycler"
+        android:gravity="left"
+        android:paddingLeft="5dp"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content" />

@@ -11,7 +11,9 @@ import org.kazin.qiwitation.object.Balance;
 
 
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Alexey on 29.09.2015.
@@ -35,9 +37,9 @@ public class UserDetailFragmentAdapter extends RecyclerView.Adapter<UserDetailFr
     public void onBindViewHolder(ViewHolderBalance holder, int position) {
         holder.amount.setText(
                 Double.toString(mBalances.get(position).getAmount()));
-
+        Currency currency = Currency.getInstance(mBalances.get(position).getCurrency());
         holder.currency.setText(
-                mBalances.get(position).getCurrency());
+                currency.getSymbol());
     }
 
 
@@ -56,6 +58,17 @@ public class UserDetailFragmentAdapter extends RecyclerView.Adapter<UserDetailFr
             super(itemView);
             currency = (TextView) itemView.findViewById(R.id.currency_item_userbalance_recycler);
             amount = (TextView) itemView.findViewById(R.id.amount_item_userbalance_recycler);
+        }
+    }
+
+    public void clearData() {
+        int size = mBalances.size();
+        if (size > 0) {
+            for (int i = 0; i < size; i++) {
+                mBalances.remove(0);
+            }
+
+            this.notifyItemRangeRemoved(0, size);
         }
     }
 }
